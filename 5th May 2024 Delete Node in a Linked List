@@ -1,0 +1,32 @@
+class Solution {
+    public void deleteNode(ListNode node) {
+        ListNode n1 = node.next; 
+
+        while(n1.next != null) {
+            node.val = n1.val; 
+            n1 = n1.next; 
+            node = node.next; 
+        }
+
+        node.val = n1.val; 
+
+        node.next = null; 
+    }
+}
+
+// class Solution {
+//     public void deleteNode(ListNode node) {
+//         ListNode n1 = node.next; 
+
+//         while(true) {
+//             node.val = n1.val; 
+//             if(n1.next == null) break; 
+//             n1 = n1.next; 
+//             node = node.next; 
+//         }
+//         node.next = null; 
+//     }
+    
+// }
+
+
