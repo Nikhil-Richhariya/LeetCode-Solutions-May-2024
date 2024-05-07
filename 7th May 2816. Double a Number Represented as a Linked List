@@ -1,0 +1,67 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+private:
+    ListNode* reverseList(ListNode* head) {
+        
+        if(head == nullptr || head -> next == nullptr) return head; 
+        
+        
+        ListNode * prev = nullptr;
+        ListNode * curr = head; 
+        ListNode * agla = head -> next; 
+        
+        while(agla != nullptr) {
+            curr ->next = prev ; 
+            prev = curr; 
+            curr = agla; 
+            if(agla != nullptr)
+                agla = curr -> next; 
+        }
+        
+        curr -> next = prev; 
+        
+        return curr; 
+    }
+
+
+public:
+    ListNode* doubleIt(ListNode* head) {
+        head = reverseList(head); 
+
+        ListNode * temp = head; 
+
+        int carry = 0 ; 
+
+
+        while(temp->next != nullptr) {
+
+            temp->val = 2*temp->val + carry ; 
+            if(temp->val > 9) {
+                carry = 1; 
+                temp->val -= 10; 
+            } else{
+                carry = 0 ; 
+            }
+            temp = temp-> next; 
+        }
+
+        // now we are at the last node 
+        temp->val = 2*temp->val + carry ;
+        if(temp->val > 9) {
+            //we need to add new node here 
+            temp->val -= 10; 
+            temp -> next = new ListNode(1);
+        }
+
+        return (reverseList(head)); 
+    }
+};
