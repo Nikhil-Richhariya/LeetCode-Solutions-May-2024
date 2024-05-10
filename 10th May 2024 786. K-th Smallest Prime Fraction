@@ -1,0 +1,112 @@
+Appraoch 1 :
+
+
+class cmp {
+public:
+    bool operator()(pair<int, int>& a, pair<int, int>& b) { // for max heap
+        return (1.0 * a.first) / a.second < (1.0 * b.first) / b.second;
+    }
+};
+
+class Solution {
+
+private:
+    bool compare(pair<int, int>& a, pair<int, int> b) {
+        return (1.0 * a.first) / a.second < (1.0 * b.first) / b.second;
+    }
+
+public:
+    vector<int> kthSmallestPrimeFraction(vector<int>& arr, int k) {
+
+        // max heap
+        priority_queue<pair<int, int>, vector<pair<int, int>>, cmp> pq;
+
+        for (int i = 0; i < arr.size(); i++) {
+            for (int j = i + 1; j < arr.size(); j++) {
+
+                pair<int, int> curr = make_pair(arr[i], arr[j]);
+
+                if (pq.size() < k) {
+                    pq.push(curr);
+                } else if (compare(curr, pq.top())) {
+                    // cout<<pq.top().first <<" / "<<pq.top().second <<endl;
+                    // cout<<curr.first <<" / "<<curr.second <<endl;
+                    pq.push(curr);
+                    pq.pop();
+                }
+            }
+        }
+
+        vector<int> ans = {pq.top().first, pq.top().second};
+
+        return ans;
+    }
+};
+
+
+Time Complexity : O(n^2(log(k)))
+Space Complexity : O(k)
+__________________________________________________________________________________________________________________________________________________________________________________
+
+Appraoch 2
+class node {
+public:
+    float f;
+    int i;
+    int j;
+
+    node(float f, int i, int j) {
+        this->f = f;
+        this->i = i;
+        this->j = j;
+    }
+
+    // void printNode() {
+    //     cout<<f<<" " << i<<"/"<<j<<endl; 
+    // }
+};
+
+class cmp {
+public:
+    bool operator()(node* n1, node* n2) { // for min heap
+        return n1->f > n2->f;
+    }
+};
+
+class Solution {
+public:
+    vector<int> kthSmallestPrimeFraction(vector<int>& arr, int k) {
+
+        priority_queue<node*, vector<node*>, cmp> pq;
+        int j = arr.size() - 1;
+
+        // step 1 : pushing the smalles element for each i ;
+        for (int i = 0; i < arr.size(); i++) {
+            pq.push(new node((arr[i] * 1.0) / arr[j], i, j));
+        }
+
+        while (--k) {
+            node* curr = pq.top();
+            pq.pop();
+            // curr->printNode();
+
+            if (curr->i < curr->j - 1)
+                pq.push(new node((arr[curr->i] * 1.0) / arr[curr->j - 1],
+                                 curr->i, curr->j - 1));
+        }
+
+        node* curr = pq.top();
+        vector<int> ans = {arr[curr->i], arr[curr->j]};
+        return ans;
+    }
+};
+
+Time Complexity : O((n+k)*log(n))
+Space Complexity : O(n)
+
+
+
+
+
+
+
