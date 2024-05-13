@@ -1,0 +1,72 @@
+class Solution {
+
+private:
+    void flipRow(vector<int>& vec) {
+        for(int i = 0 ; i<vec.size() ; i++) {
+            if(vec[i]==0) {
+                vec[i] = 1; 
+            }
+            else {
+                vec[i] = 0; 
+            }
+        }
+    }
+
+    void flipColumn(int col, vector<vector<int>>& grid) {
+        for(int i = 0 ; i<grid.size() ; i++) {
+            if(grid[i][col] == 1) {
+                grid[i][col] = 0;
+            }
+            else {
+                grid[i][col] = 1 ; 
+            }
+
+        }
+    }
+
+    int calculate (vector<vector<int>>& grid) {
+
+        int ans = 0 ; 
+        for(int i = 0 ; i < grid.size() ;i++) {
+            int rowNum = 0; 
+            int pos = 0 ; 
+            for(int j = grid[0].size() -1 ; j >= 0 ;j--) {
+                rowNum += grid[i][j] * pow(2,pos); 
+                pos++; 
+            }
+
+            ans += rowNum; 
+        }
+
+        return ans; 
+    }
+
+
+
+public:
+    int matrixScore(vector<vector<int>>& grid) {
+        
+        //flip rows for making the msb
+        for(int i = 0 ; i< grid.size() ; i++) {
+            if(grid[i][0] ==0 ) {
+                flipRow(grid[i]); 
+            }
+        }
+
+        // now flip columns if the number of 1 can be increased 
+        for(int j = 1 ; j <grid[0].size() ; j++) {
+            int zeroCnt = 0 ; 
+            for(int i = 0 ; i<grid.size() ; i++) {
+                if(grid[i][j] == 0)
+                    zeroCnt++; 
+            }
+
+            if(2 * zeroCnt > grid.size()) {
+                flipColumn(j,grid); 
+            }
+        }
+
+        return calculate(grid); 
+
+    }
+};
