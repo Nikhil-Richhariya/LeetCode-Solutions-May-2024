@@ -1,0 +1,28 @@
+
+#define ll long long
+
+class Solution {
+
+private:
+    
+    ll solve(vector<int> & nums, int k, int i , bool xored, vector<vector<ll> >& dp){
+        if(i >=nums.size()) {
+            if(xored) return INT_MIN  ;
+            else return 0; 
+        }
+        if(dp[i][xored] != -1) return dp[i][xored]; 
+
+        ll xorOp = (nums[i] ^ k) + solve(nums,k,i+1,!xored,dp); 
+        ll notXor = nums[i] + solve(nums,k,i+1,xored,dp);
+
+        return dp[i][xored] =  max(xorOp,notXor); 
+    }
+
+public:
+    long long maximumValueSum(vector<int>& nums, int k, vector<vector<int>>& edges) {
+        
+        vector<vector<ll> > dp (nums.size(), vector<ll>(2,-1)); 
+        return solve(nums,k,0,false,dp); 
+
+    }
+};
