@@ -1,0 +1,24 @@
+class Solution {
+private:
+    void getSubsets(vector<int>& nums, int i, vector<int>& temp,
+                    vector<vector<int>>& ans) {
+        if (i >= nums.size()) {
+            ans.push_back(temp);
+            return;
+        }
+
+        temp.push_back(nums[i]);
+        getSubsets(nums, i + 1, temp, ans); // taking it
+        temp.pop_back();
+        getSubsets(nums, i + 1, temp, ans); // not taking it
+    }
+
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+        vector<int> temp;
+        vector<vector<int>> ans;
+        getSubsets(nums, 0, temp, ans);
+
+        return ans;
+    }
+};
