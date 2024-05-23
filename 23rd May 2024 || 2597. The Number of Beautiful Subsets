@@ -1,0 +1,40 @@
+class Solution {
+
+private:
+    int solve(vector<int>& nums, vector<int>& temp, int k, int i) {
+        if (i >= nums.size()) {
+
+            if (temp.size() > 0)
+                return 1;
+            else
+                return 0;
+        }
+
+        int exclude = solve(nums, temp, k, i + 1);
+
+        int include = 0;
+        bool inc = true;
+
+        for (auto j : temp) {
+            if (abs(j - nums[i]) == k) {
+                inc = false;
+                break;
+            }
+        }
+
+        if (inc) {
+            temp.push_back(nums[i]);
+            include = solve(nums, temp, k, i + 1);
+            temp.pop_back();
+        }
+
+        return include + exclude;
+    }
+
+public:
+    int beautifulSubsets(vector<int>& nums, int k) {
+
+        vector<int> s;
+        return solve(nums, s, k, 0);
+    }
+};
